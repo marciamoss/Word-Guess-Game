@@ -1,0 +1,26 @@
+body{
+    margin: auto;
+    background: black;
+}
+
+.hcolor {
+    
+    -webkit-text-fill-color:blue; /* Will override color (regardless of order) */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    font-style: italic;
+    background-color: pink;
+    text-align: center;
+    font-weight: bold;
+    font-size: 50px;    
+    line-height: 100px;
+    border-style: solid;
+  }
+
+.balign{
+  
+    border-style: dotted;
+    background: lavenderblush;
+    text-align: center;
+    padding: 50px;
+}
