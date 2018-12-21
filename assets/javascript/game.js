@@ -66,7 +66,6 @@ window.onload = function(){
       res = wordList[wordPick].split("");
       //length of the word
       var wordLength = res.length;
-      console.log("word "+res);
     
       //create a string of -- for the length of the word
       for( var i = 0; i < wordLength; i++){
