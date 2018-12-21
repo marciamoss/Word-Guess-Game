@@ -13,21 +13,31 @@
         <div class="container ">
             <div class="row hcolor">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mb-3 ">
-                        <h1>Not a Fancy Word Game</h1>
+                        <h1>Word Stock</h1>
                 </div>
             </div>
         </div>
 
         <div class="container">
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col-md-4">
+                    <img class="imgwidth" src="assets/images/moon.jpg" alt="Moon" >
                 </div>
                 <div class="col-md-4 balign">
                     <p>Guess the word challenge</p>
                     <p>Type letters to begin</p>
                     <p id="word"></p>
-                    <p id=num></p>
+                    <p id="num"></p>
+                    <p id="lguess"></p>
                     <p id="outcome"></p> 
+                    <audio id="winAudio">
+                        <source src="assets/images/win.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <audio id="losAudio">
+                            <source src="assets/images/lose.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                    </audio>
                     
                 </div>
             </div>       

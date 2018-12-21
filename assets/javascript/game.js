@@ -1,5 +1,6 @@
 window.onload = function(){
-  //initializing variables
+
+  //initializing global variables
   var letterGuessed=[];
   var guessCount;
   var dashes;
@@ -10,70 +11,94 @@ window.onload = function(){
   var resEmpty;
   var wins;
   var los;
+  var mus;
+  
 
+  // Creating guessword object.
+  var gword = {
 
-  function reset(){
-    letterGuessed=[];
-    guessCount=10;
-    letter="";
-    guessed=0;
-    //initialize place holder for the word
-    emptyWord="";
-  }
+    playAudio: function() { 
+      mus.play(); 
+    } ,
 
-  //function create ids for html
-  function pids(dashes,tagnum) {
-    document.getElementById(tagnum).textContent = dashes;
-  }
+    reset: function(){
+      letterGuessed=[];
+      guessCount=10;
+      letter="";
+      guessed=0;
+      //initialize place holder for the word
+      emptyWord="";
+    }, 
 
-  //function to pick random word
-  function getword(outCome){
-    reset();
-    //List of random words for the game
-    var wordList=["mailbox","mysterious","panicky","skin","aquatic","inconclusive","many","window","foregoing",
-                  "glistening","unwritten","thirsty"];     
-          
-    //make the words array to lowercase
-    for (var i=0;i<wordList.length;i++){
-      wordList[i]=wordList[i].toLowerCase();
-    }
+    //function create ids for html
+    pids: function(dashes,tagnum){
+      document.getElementById(tagnum).textContent = dashes;
+    },
 
-    var wordPick=Math.floor(Math.random() * wordList.length);
-    //getting one word from the array
-    res = wordList[wordPick].split("");
-    //length of the word
-    var wordLength = res.length;
+    //function to pick random word
+    getword: function(outCome){
+      this.reset();
+      //List of random words for the game
+      var wordList=["cloud","bite","nervous","split","before","wire","night","saw","cause","be","describe","among",
+        "fact","letter","fear","yet","bright","minute","problem","ice","highest","present","highway","dog",
+        "distant","command","familiar","manner","introduced","ten","unless","itself","volume","enemy","sat",
+        "solar","environment","element","none","halfway","scared","lips","day","against","thing","setting",
+        "cut","check","foreign","exchange","toy","along","sale","layers","blind","cave","save","goose",
+        "written","feathers","guide","riding","regular","pleasure","consonant","hunter","case","ourselves",
+        "probably","research","pride","bow","building","sitting","proper","throw","board","broad","desk",
+        "involved","period","several","either","tight","class","has","driven","produce","wild","instance",
+        "slept","wide","type","army","pay","them","flower","major","herd","piano","stranger","appearance",
+        "cannot","pressure","hall","sure","office","successful","wind","matter","top","grass","entirely",
+        "pick","combination","shorter","appearance","middle","perfectly","map","red","wheat","silk",
+        "themselves","potatoes","affect","tongue","travel","pretty","difficult","put","cake","through",
+        "this","talk","score","lead","shelf","square","local","third","tie","diagram","won","fairly",
+        "porch","symbol","although","throat","food","classroom","greatest","triangle","oldest","lamp",
+        "development","volume","war","high","house","after","longer","learn","hung","explanation","balance",
+        "gun","opposite","mirror","plant","mouth","shoe","if","uncle","disease","on","boat","touch",
+        "series","industrial","good","cake","welcome","flight","common","function","raw"];
+      //make the words array to lowercase
+      for (var i=0;i<wordList.length;i++){
+        wordList[i]=wordList[i].toLowerCase();
+      }
 
+      var wordPick=Math.floor(Math.random() * wordList.length);
+      //getting one word from the array
+      res = wordList[wordPick].split("");
+      //length of the word
+      var wordLength = res.length;
+      console.log("word "+res);
     
-    //create a string of -- for the length of the word
-    for( var i = 0; i < wordLength; i++){
-      emptyWord=" _"+emptyWord;
-    }
+      //create a string of -- for the length of the word
+      for( var i = 0; i < wordLength; i++){
+        emptyWord=" _"+emptyWord;
+      }
     
-    //creating a copy of empty word without spaces to be used later 
-    resEmpty = emptyWord;
-    resEmpty = (resEmpty.replace(/ +/g, "")).split("");
-    var gct= "Guesses Left "+guessCount;
-    pids(emptyWord,"word");
-    pids(gct,"num");
+      //creating a copy of empty word without spaces to be used later 
+      resEmpty = emptyWord;
+      resEmpty = (resEmpty.replace(/ +/g, "")).split("");
+      var gct= "Guesses Left "+guessCount;
+      this.pids(emptyWord,"word");
+      this.pids(gct,"num");
+      this.pids(letterGuessed,"lguess");
     
-    if (outCome==="O"){
-      var oct= "Wins: 0 "+"Loses: 0 ";
-      wins=0;
-      los=0;
-    }
-    if (outCome==="W"){
-      wins=wins+1;
-      oct= "Wins: "+wins+" "+"Loses: "+los;
-    }
-    if (outCome==="L"){
-      los=los+1;
-      oct= "Wins: "+wins+" "+"Loses: "+los;
-    }
-    pids(oct,"outcome");
-  }//end of getword function
+      if (outCome==="O"){
+        var oct= "Wins: 0 "+"Loses: 0 ";
+        wins=0;
+        los=0;
+      }
+      if (outCome==="W"){
+        wins=wins+1;
+        oct= "Wins: "+wins+" "+"Loses: "+los;
+      }
+      if (outCome==="L"){
+        los=los+1;
+        oct= "Wins: "+wins+" "+"Loses: "+los;
+      }
+      this.pids(oct,"outcome");
+    }//end of getword function
+  };
 
-  getword(outcome="O");
+  gword.getword(outcome="O");
 
   //Press any letter key to get started..
   document.onkeyup = function(evt) {
@@ -97,10 +122,12 @@ window.onload = function(){
               if (letterGuessed[x]===res[y]){
                 resEmpty[y]=res[y];
                 emptyWord=resEmpty;
-                pids(emptyWord.join(" "),"word");
+                gword.pids(emptyWord.join(" "),"word");
                 var a = emptyWord.indexOf("_");
                 if (a===-1){
-                  getword(outcome="W");
+                  gword.getword(outcome="W");
+                  mus = document.getElementById("winAudio"); 
+                  gword.playAudio();
                 }
               }
             }
@@ -109,7 +136,8 @@ window.onload = function(){
         guessCount=guessCount-1;
         if(guessCount<=10 && guessCount>=0){
           var gct= "Guesses Left "+guessCount;
-          pids(gct,"num");
+          gword.pids(gct,"num");
+          gword.pids(letterGuessed,"lguess");
         }
       }
 
@@ -129,7 +157,8 @@ window.onload = function(){
           guessCount=guessCount-1; 
           if(guessCount<=10 && guessCount>=0){
             var gct= "Guesses Left "+guessCount;
-            pids(gct,"num");
+            gword.pids(gct,"num");
+            gword.pids(letterGuessed,"lguess");
           }
           
           //Check if the letters guessed is part of the word for rest of the letter entered
@@ -139,9 +168,11 @@ window.onload = function(){
                 resEmpty[y]=res[y];
                 emptyWord=resEmpty;
                 var a = emptyWord.indexOf("_");
-                pids(emptyWord.join(" "),"word");
+                gword.pids(emptyWord.join(" "),"word");
                 if (a===-1){
-                  getword(outcome="W");
+                  gword.getword(outcome="W");
+                  mus = document.getElementById("winAudio"); 
+                  gword.playAudio();
                 }
               }
             }
@@ -153,7 +184,9 @@ window.onload = function(){
       }
       //gets the new word
       if (letterGuessed.length===10){
-        getword(outcome="L");
+        gword.getword(outcome="L");
+        mus = document.getElementById("losAudio"); 
+        gword.playAudio();
       }
 
     }
