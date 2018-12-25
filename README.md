@@ -2,8 +2,8 @@
 
 A hangman game just renamed as word stock, where the player has 10 guesses to get the word right.
 The guess goes down each time a letter is clicked.
-If the letter is part of the word it dispalys at the location it originally is.
-The count does not change if the player picks the same letter twice.
+If the letter is part of the word it dispalys at the location it originally is..
+The count does not change if the player picks the same letter twice or the letter is part of the word.
 Different Audio plays each for winning and losing.
 
 

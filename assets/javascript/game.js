@@ -12,6 +12,8 @@ window.onload = function(){
   var wins;
   var los;
   var mus;
+  var partOfWord=[];
+  var pow;
   
 
   // Creating guessword object.
@@ -28,6 +30,8 @@ window.onload = function(){
       guessed=0;
       //initialize place holder for the word
       emptyWord="";
+      partOfWord=[];
+      pow=0;
     }, 
 
     //function create ids for html
@@ -56,6 +60,7 @@ window.onload = function(){
         "development","volume","war","high","house","after","longer","learn","hung","explanation","balance",
         "gun","opposite","mirror","plant","mouth","shoe","if","uncle","disease","on","boat","touch",
         "series","industrial","good","cake","welcome","flight","common","function","raw"];
+      
       //make the words array to lowercase
       for (var i=0;i<wordList.length;i++){
         wordList[i]=wordList[i].toLowerCase();
@@ -111,83 +116,57 @@ window.onload = function(){
 
       var letter = event.key.toLowerCase();   
       //letterGuessed holds the guessed letters
+
       letterGuessed.push(letter); 
       
-      if(letterGuessed.length===1){
-        //
-          //Check if the letters guessed is part of the word for first letter entered
-          for( var x = 0; x < letterGuessed.length; x++){
-            for( var y = 0; y < res.length; y++){
-              if (letterGuessed[x]===res[y]){
-                resEmpty[y]=res[y];
-                emptyWord=resEmpty;
-                gword.pids(emptyWord.join(" "),"word");
-                var a = emptyWord.indexOf("_");
-                if (a===-1){
-                  gword.getword(outcome="W");
-                  mus = document.getElementById("winAudio"); 
-                  gword.playAudio();
-                }
-              }
-            }
+      //each letter check if its already been guessed
+      if (letterGuessed.length>1){
+        for( var z = 0; z < (letterGuessed.length-1); z++){
+          lth=letterGuessed.length-1;
+          if (letterGuessed[z]===letterGuessed[lth]){
+            letterGuessed.pop();
           }
-        //
-        guessCount=guessCount-1;
-        if(guessCount<=10 && guessCount>=0){
-          var gct= "Guesses Left "+guessCount;
+        }
+      }
+      
+      for( var x = 0; x < letterGuessed.length; x++){  
+        for( var y = 0; y < res.length; y++){
+          if (letterGuessed[x]===res[y]){
+            partOfWord[y]=1;
+            resEmpty[y]=res[y];
+            emptyWord=resEmpty;
+            gword.pids(emptyWord.join(" "),"word");
+          }else{
+            partOfWord[y]=0;
+          }
+
+        }
+      } 
+      pow = partOfWord.indexOf(1);
+      
+      if (pow===-1){
+        guessCount=10-letterGuessed.length;
+        var gct= "Guesses Left "+guessCount;
+        if(0<=guessCount && guessCount<10){
           gword.pids(gct,"num");
           gword.pids(letterGuessed,"lguess");
         }
+      }else{
+        letterGuessed.pop();
+      }
+      var a = emptyWord.indexOf("_");
+      if (a===-1){
+        gword.getword(outcome="W");
+        mus = document.getElementById("winAudio"); 
+        gword.playAudio();
       }
 
-      //check if the letter was already guessed
-      if(letterGuessed.length>1){
-        for( var z = 0; z < letterGuessed.length-1; z++){
-          if (letter!==letterGuessed[z]) {
-            guessed = 0;
-          } else{
-            guessed = 1;
-            z=letterGuessed.length;
-          }
-        }
-        if(guessed===1){
-          letterGuessed.pop();
-        }else{
-          guessCount=guessCount-1; 
-          if(guessCount<=10 && guessCount>=0){
-            var gct= "Guesses Left "+guessCount;
-            gword.pids(gct,"num");
-            gword.pids(letterGuessed,"lguess");
-          }
-          
-          //Check if the letters guessed is part of the word for rest of the letter entered
-          for( var x = 1; x < letterGuessed.length; x++){
-            for( var y = 0; y < res.length; y++){
-              if (letterGuessed[x]===res[y]){
-                resEmpty[y]=res[y];
-                emptyWord=resEmpty;
-                var a = emptyWord.indexOf("_");
-                gword.pids(emptyWord.join(" "),"word");
-                if (a===-1){
-                  gword.getword(outcome="W");
-                  mus = document.getElementById("winAudio"); 
-                  gword.playAudio();
-                }
-              }
-            }
-          }
-        
-        
-        }
-        
-      }
       //gets the new word
       if (letterGuessed.length===10){
         gword.getword(outcome="L");
         mus = document.getElementById("losAudio"); 
         gword.playAudio();
       }
-
     }
   };
 };
